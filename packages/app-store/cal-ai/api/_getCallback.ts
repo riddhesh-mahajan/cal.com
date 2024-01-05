@@ -52,6 +52,7 @@ export async function getHandler(req: NextApiRequest, res: NextApiResponse) {
         },
         body: JSON.stringify({
           userId: session.user.id,
+          apiKey,
         }),
       }
     );

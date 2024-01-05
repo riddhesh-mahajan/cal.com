@@ -6,8 +6,23 @@ import { env } from "../../../env.mjs";
 import sendEmail from "../../../utils/sendEmail";
 
 export const POST = async (request: NextRequest) => {
-  const { userId } = await request.json();
+  const { userId, apiKey } = await request.json();
 
+  // Check if user has cal.ai api key created
+  // If not, that means they haven't installed the app and this request is made by someone else
+  const hasCalAiApiKey = await prisma.apiKey.findFirst({
+    where: {
+      userId,
+      appId: "cal-ai",
+      hashedKey: apiKey,
+    },
+  });
+
+  if (!hasCalAiApiKey) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
+  // Find user
   const user = await prisma.user.findUnique({
     select: {
       email: true,
@@ -23,6 +38,7 @@ export const POST = async (request: NextRequest) => {
     return new Response("User not found", { status: 404 });
   }
 
+  // Send welcome email
   await sendEmail({
     subject: "Welcome to Cal AI",
     to: user.email,
