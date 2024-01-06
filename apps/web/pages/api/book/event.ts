@@ -12,6 +12,8 @@ async function handler(req: NextApiRequest & { userId?: number }, res: NextApiRe
   await checkRateLimitAndThrowError({
     rateLimitingType: "core",
     identifier: userIp,
+    useLock: true,
+    lockUid: userIp,
   });
 
   const session = await getServerSession({ req, res });

@@ -1,3 +1,4 @@
+import { Lock } from "@upstash/lock";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
@@ -9,6 +10,8 @@ const log = logger.getSubLogger({ prefix: ["RateLimit"] });
 export type RateLimitHelper = {
   rateLimitingType?: "core" | "forcedSlowMode" | "common" | "api" | "ai";
   identifier: string;
+  useLock?: boolean;
+  lockUid?: string;
 };
 
 export type RatelimitResponse = {
@@ -92,4 +95,14 @@ export function rateLimiter() {
   }
 
   return rateLimit;
+}
+
+export function acquireLock(lockUid: string): Promise<unknown> {
+  const lock = new Lock({
+    id: lockUid,
+    redis: Redis.fromEnv(),
+    lease: parseInt(process.env.UPSTASH_LOCK_LEASE_TIME || "3000"),
+  });
+
+  return lock.acquire();
 }
