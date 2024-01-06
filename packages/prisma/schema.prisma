@@ -455,6 +455,7 @@ model Booking {
   iCalSequence          Int                  @default(0)
   instantMeetingToken   InstantMeetingToken?
 
+  @@unique([userId, eventTypeId, startTime, endTime])
   @@index([eventTypeId])
   @@index([userId])
   @@index([destinationCalendarId])
