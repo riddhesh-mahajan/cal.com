@@ -884,6 +884,14 @@ async function handler(
     eventType,
   });
 
+  // Check if number of guests is within the limit
+  if (reqGuests && reqGuests.length > parseInt(process.env.MAX_GUESTS_PER_BOOKING || "0")) {
+    throw new HttpError({
+      statusCode: 400,
+      message: `Number of guests exceeds the limit of ${process.env.MAX_GUESTS_PER_BOOKING} per booking`,
+    });
+  }
+
   const loggerWithEventDetails = logger.getSubLogger({
     prefix: ["book:user", `${eventTypeId}:${reqBody.user}/${eventTypeSlug}`],
   });
