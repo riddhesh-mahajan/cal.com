@@ -265,6 +265,8 @@ model User {
   // Used to lock the user account
   locked Boolean @default(false)
 
+  segments SegmentUser[]
+
   @@unique([email])
   @@unique([email, username])
   @@unique([username, organizationId])
@@ -1052,4 +1054,20 @@ model Avatar {
 
   @@unique([teamId, userId])
   @@map(name: "avatars")
+}
+
+model Segment {
+  id        Int           @id @default(autoincrement())
+  name      String
+  users     SegmentUser[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model SegmentUser {
+  id        Int     @id @default(autoincrement())
+  segmentId Int
+  userId    Int
+  segment   Segment @relation(fields: [segmentId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
