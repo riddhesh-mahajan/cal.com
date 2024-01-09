@@ -113,6 +113,7 @@ const tabs: VerticalTabItemProps[] = [
     icon: Lock,
     children: [
       //
+      { name: "Segments", href: "/settings/admin/segments" },
       { name: "features", href: "/settings/admin/flags" },
       { name: "license", href: "/auth/setup?step=1" },
       { name: "impersonation", href: "/settings/admin/impersonation" },

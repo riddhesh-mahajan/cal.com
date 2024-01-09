@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { authedAdminProcedure } from "../../../procedures/authedProcedure";
 import { router, importHandler } from "../../../trpc";
+import { ZCreateSegmentSchema } from "./createSegment.schema";
 import { ZListMembersSchema } from "./listPaginated.schema";
 import { ZAdminLockUserAccountSchema } from "./lockUserAccount.schema";
 import { ZAdminPasswordResetSchema } from "./sendPasswordReset.schema";
@@ -39,4 +40,8 @@ export const adminRouter = router({
         data: { enabled, updatedBy: user.id },
       });
     }),
+  createSegment: authedAdminProcedure.input(ZCreateSegmentSchema).mutation(async (opts) => {
+    const handler = await importHandler(namespaced("createSegment"), () => import("./createSegment.handler"));
+    return handler(opts);
+  }),
 });
