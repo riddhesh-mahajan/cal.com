@@ -42,11 +42,11 @@ export const SegmentAddView = () => {
 
   return (
     <>
-      <Meta title="Add segment" description="Here you can create new user segment" />
+      <Meta title="Add segment" description="Here you can create new segment" />
       <NoSSR>
         <Suspense fallback={<SkeletonLoader />}>
           <SegmentForm
-            submitLabel="Add user"
+            submitLabel="Add segment"
             onSubmit={async (values) => {
               console.log(values);
               const parser = getParserWithGeneric(segmentBodySchema);
