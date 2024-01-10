@@ -265,7 +265,7 @@ model User {
   // Used to lock the user account
   locked Boolean @default(false)
 
-  segments SegmentUser[]
+  segments Segment[]
 
   @@unique([email])
   @@unique([email, username])
@@ -1056,18 +1056,31 @@ model Avatar {
   @@map(name: "avatars")
 }
 
-model Segment {
-  id        Int           @id @default(autoincrement())
-  name      String
-  users     SegmentUser[]
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
+enum SegmentTeamFilterOptions {
+  ALL
+  NO_TEAMS
+  ATLEAST_ONE_TEAM
 }
 
-model SegmentUser {
-  id        Int     @id @default(autoincrement())
-  segmentId Int
-  userId    Int
-  segment   Segment @relation(fields: [segmentId], references: [id], onDelete: Cascade)
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+enum SegmentSelectionOptions {
+  RANDOM
+  CUSTOM
+  TARGETED
+}
+
+enum SegmentCoverageTypeOptions {
+  PERCENT
+  USERS
+}
+
+model Segment {
+  id           Int                        @id @default(autoincrement())
+  name         String
+  coverage     Int
+  coverageType SegmentCoverageTypeOptions @default(PERCENT)
+  selection    SegmentSelectionOptions    @default(RANDOM)
+  teamFilter   SegmentTeamFilterOptions   @default(ALL)
+  users        User[]
+  createdAt    DateTime                   @default(now())
+  updatedAt    DateTime                   @updatedAt
 }

@@ -1,3 +1,5 @@
+import { prisma } from "@calcom/prisma";
+
 import type { TrpcSessionUser } from "../../../trpc";
 import type { TCreateSegmentSchema } from "./createSegment.schema";
 
@@ -12,11 +14,34 @@ const createSegmentHandler = async ({ input }: GetOptions) => {
   console.log(input);
   const { name, emails, coverage, selection, coverageType, team } = input;
 
-  // TODO: Implement this handler
+  // Get all users
+  const users = await prisma.user.findMany({
+    where: {
+      email: {
+        in: emails,
+      },
+    },
+  });
+
+  // Create segment
+  const newSegment = await prisma.segment.create({
+    data: {
+      name,
+      coverage,
+      selection,
+      coverageType,
+      teamFilter: team,
+      users: {
+        connect: users.map((user) => ({
+          id: user.id,
+        })),
+      },
+    },
+  });
 
   return {
     success: true,
-    input,
+    newSegment,
   };
 };
 
