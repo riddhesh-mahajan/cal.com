@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname, useRouter } from "next/navigation";
 import { Suspense } from "react";
 
 import NoSSR from "@calcom/core/components/NoSSR";
@@ -22,17 +23,16 @@ const SkeletonLoader = () => {
 };
 
 export const SegmentAddView = () => {
-  // const pathname = usePathname();
-  // const router = useRouter();
-  // const utils = trpc.useContext();
+  const pathname = usePathname();
+  const router = useRouter();
+
   const mutation = trpc.viewer.admin.createSegment.useMutation({
     onSuccess: async () => {
       showToast("Segment added successfully", "success");
-      // await utils.viewer.users.list.invalidate();
 
-      // if (pathname !== null) {
-      //   router.replace(pathname.replace("/add", ""));
-      // }
+      if (pathname !== null) {
+        router.replace(pathname.replace("/add", ""));
+      }
     },
     onError: (err) => {
       console.error(err.message);
