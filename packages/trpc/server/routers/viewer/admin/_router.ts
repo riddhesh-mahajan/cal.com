@@ -4,6 +4,7 @@ import { authedAdminProcedure } from "../../../procedures/authedProcedure";
 import { router, importHandler } from "../../../trpc";
 import { ZCreateSegmentSchema } from "./createSegment.schema";
 import { ZListMembersSchema } from "./listPaginated.schema";
+import { ZListSegmentsSchema } from "./listSegments.schema";
 import { ZAdminLockUserAccountSchema } from "./lockUserAccount.schema";
 import { ZAdminPasswordResetSchema } from "./sendPasswordReset.schema";
 
@@ -42,6 +43,10 @@ export const adminRouter = router({
     }),
   createSegment: authedAdminProcedure.input(ZCreateSegmentSchema).mutation(async (opts) => {
     const handler = await importHandler(namespaced("createSegment"), () => import("./createSegment.handler"));
+    return handler(opts);
+  }),
+  listSegments: authedAdminProcedure.input(ZListSegmentsSchema).query(async (opts) => {
+    const handler = await importHandler(namespaced("listSegments"), () => import("./listSegments.handler"));
     return handler(opts);
   }),
 });
