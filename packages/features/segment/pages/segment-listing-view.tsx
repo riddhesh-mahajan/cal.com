@@ -74,7 +74,7 @@ export const SegmentListingView = () => {
                             {
                               id: "edit",
                               label: "Edit",
-                              href: `/settings/admin/users/${singleSegmentData.id}/edit`,
+                              href: `/settings/admin/segments/${singleSegmentData.id}/edit`,
                               icon: Edit,
                             },
                             {

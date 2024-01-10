@@ -3,10 +3,12 @@ import { z } from "zod";
 import { authedAdminProcedure } from "../../../procedures/authedProcedure";
 import { router, importHandler } from "../../../trpc";
 import { ZCreateSegmentSchema } from "./createSegment.schema";
+import { ZGetSegmentSchema } from "./getSegment.schema";
 import { ZListMembersSchema } from "./listPaginated.schema";
 import { ZListSegmentsSchema } from "./listSegments.schema";
 import { ZAdminLockUserAccountSchema } from "./lockUserAccount.schema";
 import { ZAdminPasswordResetSchema } from "./sendPasswordReset.schema";
+import { ZUpdateSegmentSchema } from "./updateSegment.schema";
 
 const NAMESPACE = "admin";
 
@@ -47,6 +49,14 @@ export const adminRouter = router({
   }),
   listSegments: authedAdminProcedure.input(ZListSegmentsSchema).query(async (opts) => {
     const handler = await importHandler(namespaced("listSegments"), () => import("./listSegments.handler"));
+    return handler(opts);
+  }),
+  getSegment: authedAdminProcedure.input(ZGetSegmentSchema).query(async (opts) => {
+    const handler = await importHandler(namespaced("getSegment"), () => import("./getSegment.handler"));
+    return handler(opts);
+  }),
+  updateSegment: authedAdminProcedure.input(ZUpdateSegmentSchema).mutation(async (opts) => {
+    const handler = await importHandler(namespaced("updateSegment"), () => import("./updateSegment.handler"));
     return handler(opts);
   }),
 });
