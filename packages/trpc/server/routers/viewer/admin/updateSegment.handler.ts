@@ -12,7 +12,7 @@ type GetOptions = {
 
 const updateSegmentHandler = async ({ input }: GetOptions) => {
   console.log(input);
-  const { segmentId, name, emails, coverage, selection, coverageType, team } = input;
+  const { segmentId, name, emails, coverage, selection, coverageType, team, feature } = input;
 
   // Get all users
   const users = await prisma.user.findMany({
@@ -24,20 +24,29 @@ const updateSegmentHandler = async ({ input }: GetOptions) => {
   });
 
   // Update segment
+  const data: any = {
+    name,
+    coverage,
+    selection,
+    coverageType,
+    teamFilter: team,
+    users: {
+      connect: users.map((user) => ({ id: user.id })),
+    },
+  };
+
+  if (feature) {
+    data.feature = {
+      connect: {
+        slug: feature,
+      },
+    };
+  }
   const segment = await prisma.segment.update({
     where: {
       id: segmentId,
     },
-    data: {
-      name,
-      coverage,
-      selection,
-      coverageType,
-      teamFilter: team,
-      users: {
-        connect: users.map((user) => ({ id: user.id })),
-      },
-    },
+    data: data,
   });
 
   return {

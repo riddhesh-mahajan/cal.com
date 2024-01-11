@@ -25,7 +25,8 @@ const SkeletonLoader = () => {
 export const SegmentAddView = () => {
   const pathname = usePathname();
   const router = useRouter();
-
+  const { data } = trpc.viewer.admin.listFeatures.useQuery({});
+  const features = data?.features;
   const mutation = trpc.viewer.admin.createSegment.useMutation({
     onSuccess: async () => {
       showToast("Segment added successfully", "success");
@@ -54,6 +55,10 @@ export const SegmentAddView = () => {
               console.log(parsedValues);
               mutation.mutate(parsedValues);
             }}
+            features={features?.map((feature) => ({
+              value: feature.slug,
+              label: feature.slug,
+            }))}
           />
         </Suspense>
       </NoSSR>

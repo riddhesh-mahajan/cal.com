@@ -8,6 +8,7 @@ export const ZUpdateSegmentSchema = z.object({
   selection: z.enum(["RANDOM", "CUSTOM", "TARGETED"]),
   coverageType: z.enum(["PERCENT", "USERS"]),
   team: z.enum(["ALL", "NO_TEAMS", "ATLEAST_ONE_TEAM"]),
+  feature: z.string().optional(),
 });
 
 export type TUpdateSegmentSchema = z.infer<typeof ZUpdateSegmentSchema>;

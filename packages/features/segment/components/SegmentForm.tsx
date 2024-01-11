@@ -17,6 +17,7 @@ type OptionValues = {
   coverageType: Option;
   team: Option;
   emails: string[];
+  feature: Option;
 };
 
 type FormValues = OptionValues;
@@ -26,11 +27,13 @@ export const SegmentForm = ({
   localeProp = "en",
   onSubmit = noop,
   submitLabel = "save",
+  features = [],
 }: {
   defaultValues?: any;
   localeProp?: string;
   onSubmit: (data: FormValues) => void;
   submitLabel?: string;
+  features?: Option[];
 }) => {
   const { t } = useLocale();
 
@@ -77,6 +80,10 @@ export const SegmentForm = ({
       },
 
       emails: defaultValues?.emails || [],
+      feature: {
+        value: defaultValues?.featureId,
+        label: defaultValues?.featureId,
+      },
     },
   });
 
@@ -85,6 +92,20 @@ export const SegmentForm = ({
   return (
     <Form form={form} className="space-y-4" handleSubmit={onSubmit}>
       <TextField label="Name" placeholder="example" required {...form.register("name")} />
+
+      <Controller
+        name="feature"
+        control={form.control}
+        render={({ field: { onChange, value } }) => (
+          <div>
+            <Label className="text-default font-medium" htmlFor="feature">
+              {/* TODO: handle t */}
+              {t("feature")}
+            </Label>
+            <Select<{ label: string; value: string }> value={value} options={features} onChange={onChange} />
+          </div>
+        )}
+      />
 
       <Controller
         name="selection"

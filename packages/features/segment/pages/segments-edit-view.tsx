@@ -40,6 +40,8 @@ const SegmentEditView = ({ segmentId }: { segmentId: number }) => {
   const router = useRouter();
   const [data] = trpc.viewer.admin.getSegment.useSuspenseQuery({ segmentId });
   const { segment } = data;
+  const { data: featuresData } = trpc.viewer.admin.listFeatures.useQuery({});
+  const features = featuresData?.features;
 
   const mutation = trpc.viewer.admin.updateSegment.useMutation({
     onSuccess: async () => {
@@ -70,6 +72,10 @@ const SegmentEditView = ({ segmentId }: { segmentId: number }) => {
               mutation.mutate({ ...parsedValues, segmentId });
             }}
             defaultValues={segment}
+            features={features?.map((feature) => ({
+              value: feature.slug,
+              label: feature.slug,
+            }))}
           />
         </Suspense>
       </NoSSR>

@@ -930,10 +930,13 @@ model Feature {
   type        FeatureType? @default(RELEASE)
   // If the flag is considered stale
   stale       Boolean?     @default(false)
-  lastUsedAt  DateTime?
-  createdAt   DateTime?    @default(now())
-  updatedAt   DateTime?    @default(now()) @updatedAt
-  updatedBy   Int?
+  // Connected segment
+  segment     Segment?
+
+  lastUsedAt DateTime?
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @default(now()) @updatedAt
+  updatedBy  Int?
 
   @@index([enabled])
   @@index([stale])
@@ -1083,6 +1086,9 @@ model Segment {
   selection    SegmentSelectionOptions    @default(RANDOM)
   teamFilter   SegmentTeamFilterOptions   @default(ALL)
   users        User[]
+
+  feature   Feature? @relation(fields: [featureId], references: [slug])
+  featureId String?  @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

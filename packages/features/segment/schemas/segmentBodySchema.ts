@@ -10,5 +10,6 @@ export const segmentBodySchema = z
     selection: optionToValueSchema(z.enum(["RANDOM", "CUSTOM", "TARGETED"])),
     coverageType: optionToValueSchema(z.enum(["PERCENT", "USERS"])),
     team: optionToValueSchema(z.enum(["ALL", "NO_TEAMS", "ATLEAST_ONE_TEAM"])),
+    feature: optionToValueSchema(z.string().optional()),
   })
   .passthrough();
