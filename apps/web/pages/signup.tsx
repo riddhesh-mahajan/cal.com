@@ -230,7 +230,7 @@ export default function Signup({
       .then(handleErrorsAndStripe)
       .then(async () => {
         telemetry.event(telemetryEventTypes.signup, collectPageParameters());
-        const verifyOrGettingStarted = flags["email-verification"].enabled
+        const verifyOrGettingStarted = flags["email-verification"]?.enabled
           ? "auth/verify-email"
           : "getting-started";
         const callBackUrl = `${

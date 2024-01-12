@@ -175,7 +175,7 @@ function useRedirectToOnboardingIfNeeded() {
 
   const { data: email } = useEmailVerifyCheck();
 
-  const needsEmailVerification = !email?.isVerified && flags["email-verification"].enabled;
+  const needsEmailVerification = !email?.isVerified && flags["email-verification"]?.enabled;
 
   const isRedirectingToOnboarding = user && shouldShowOnboarding(user);
 

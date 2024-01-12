@@ -15,7 +15,7 @@ function VerifyEmailBanner({ data }: VerifyEmailBannerProps) {
   const { t } = useLocale();
   const mutation = trpc.viewer.auth.resendVerifyEmail.useMutation();
 
-  if (!data || !flags["email-verification"].enabled) return null;
+  if (!data || !flags["email-verification"]?.enabled) return null;
 
   return (
     <>
