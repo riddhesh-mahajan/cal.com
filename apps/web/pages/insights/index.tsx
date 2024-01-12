@@ -1,7 +1,10 @@
 "use client";
 
+import type { GetServerSidePropsContext } from "next";
+import { getSession } from "next-auth/react";
+
 import { getLayout } from "@calcom/features/MainLayout";
-import { getFeatureFlagMap } from "@calcom/features/flags/server/utils";
+import { getFeatureFlagMap, isIAmInPilotingSegment } from "@calcom/features/flags/server/utils";
 import {
   AverageEventDurationChart,
   BookingKPICards,
@@ -16,6 +19,7 @@ import { ShellMain } from "@calcom/features/shell/Shell";
 import { UpgradeTip } from "@calcom/features/tips";
 import { WEBAPP_URL } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
+import { FeatureStatus } from "@calcom/prisma/enums";
 import { trpc } from "@calcom/trpc";
 import { Button, ButtonGroup } from "@calcom/ui";
 import { RefreshCcw, UserPlus, Users } from "@calcom/ui/components/icon";
@@ -107,14 +111,33 @@ InsightsPage.PageWrapper = PageWrapper;
 InsightsPage.getLayout = getLayout;
 
 // If feature flag is disabled, return not found on getServerSideProps
-export const getServerSideProps = async () => {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getSession(ctx);
+  if (!session || !session.user) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
   const prisma = await import("@calcom/prisma").then((mod) => mod.default);
   const flags = await getFeatureFlagMap(prisma);
 
-  if (flags.insights === false) {
+  if (flags.insights.enabled === false) {
     return {
       notFound: true,
     };
+  }
+
+  if (flags.insights.status === FeatureStatus.PILOTING) {
+    const insidePilotingSegment = await isIAmInPilotingSegment(prisma, "insights", session.user.id);
+    if (!insidePilotingSegment) {
+      return {
+        notFound: true,
+      };
+    }
   }
 
   return {

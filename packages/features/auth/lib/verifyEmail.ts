@@ -22,7 +22,7 @@ export const sendEmailVerification = async ({ email, language, username }: Verif
   const translation = await getTranslation(language ?? "en", "common");
   const flags = await getFeatureFlagMap(prisma);
 
-  if (!flags["email-verification"]) {
+  if (!flags["email-verification"].enabled) {
     log.warn("Email verification is disabled - Skipping");
     return { ok: true, skipped: true };
   }

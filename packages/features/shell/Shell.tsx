@@ -175,7 +175,7 @@ function useRedirectToOnboardingIfNeeded() {
 
   const { data: email } = useEmailVerifyCheck();
 
-  const needsEmailVerification = !email?.isVerified && flags["email-verification"];
+  const needsEmailVerification = !email?.isVerified && flags["email-verification"].enabled;
 
   const isRedirectingToOnboarding = user && shouldShowOnboarding(user);
 
@@ -687,7 +687,7 @@ const Navigation = () => {
 
 function useShouldDisplayNavigationItem(item: NavigationItemType) {
   const flags = useFlagMap();
-  if (isKeyInObject(item.name, flags)) return flags[item.name];
+  if (isKeyInObject(item.name, flags)) return flags[item.name].enabled;
   return true;
 }
 

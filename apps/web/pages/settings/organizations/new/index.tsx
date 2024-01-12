@@ -1,9 +1,11 @@
 import type { GetServerSidePropsContext } from "next";
+import { getSession } from "next-auth/react";
 
 import LicenseRequired from "@calcom/features/ee/common/components/LicenseRequired";
 import { CreateANewOrganizationForm } from "@calcom/features/ee/organizations/components";
-import { getFeatureFlagMap } from "@calcom/features/flags/server/utils";
+import { getFeatureFlagMap, isIAmInPilotingSegment } from "@calcom/features/flags/server/utils";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
+import { FeatureStatus } from "@calcom/prisma/enums";
 import { WizardLayout, Meta } from "@calcom/ui";
 
 import type { inferSSRProps } from "@lib/types/inferSSRProps";
@@ -28,13 +30,32 @@ const LayoutWrapper = (page: React.ReactElement) => {
 };
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const session = await getSession(context);
+  if (!session || !session.user) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
   const prisma = await import("@calcom/prisma").then((mod) => mod.default);
   const flags = await getFeatureFlagMap(prisma);
   // Check if organizations are enabled
-  if (flags["organizations"] !== true) {
+  if (flags["organizations"].enabled !== true) {
     return {
       notFound: true,
     };
+  }
+
+  if (flags.insights.status === FeatureStatus.PILOTING) {
+    const insidePilotingSegment = await isIAmInPilotingSegment(prisma, "organizations", session.user.id);
+    if (!insidePilotingSegment) {
+      return {
+        notFound: true,
+      };
+    }
   }
 
   const querySlug = context.query.slug as string;

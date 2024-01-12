@@ -230,7 +230,9 @@ export default function Signup({
       .then(handleErrorsAndStripe)
       .then(async () => {
         telemetry.event(telemetryEventTypes.signup, collectPageParameters());
-        const verifyOrGettingStarted = flags["email-verification"] ? "auth/verify-email" : "getting-started";
+        const verifyOrGettingStarted = flags["email-verification"].enabled
+          ? "auth/verify-email"
+          : "getting-started";
         const callBackUrl = `${
           searchParams?.get("callbackUrl")
             ? isOrgInviteByLink
@@ -580,7 +582,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   // username + email prepopulated from query params
   const { username: preFillusername, email: prefilEmail } = querySchema.parse(ctx.query);
 
-  if ((process.env.NEXT_PUBLIC_DISABLE_SIGNUP === "true" && !token) || flags["disable-signup"]) {
+  if ((process.env.NEXT_PUBLIC_DISABLE_SIGNUP === "true" && !token) || flags["disable-signup"].enabled) {
     return {
       notFound: true,
     };

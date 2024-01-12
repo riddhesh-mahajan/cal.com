@@ -387,7 +387,7 @@ export default class GoogleCalendarService implements Calendar {
     const flags = await getFeatureFlagMap(prisma);
 
     let freeBusyResult: calendar_v3.Schema$FreeBusyResponse = {};
-    if (!flags["calendar-cache"]) {
+    if (!flags["calendar-cache"].enabled) {
       this.log.warn("Calendar Cache is disabled - Skipping");
       const { timeMin, timeMax, items } = args;
       const apires = await calendar.freebusy.query({

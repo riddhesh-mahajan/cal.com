@@ -276,7 +276,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
   // Provided by Rewrite from next.config.js
   const isOrgProfile = context.query?.isOrgProfile === "1";
   const flags = await getFeatureFlagMap(prisma);
-  const isOrganizationFeatureEnabled = flags["organizations"];
+  const isOrganizationFeatureEnabled = flags["organizations"].enabled;
 
   log.debug("getServerSideProps", {
     isOrgProfile,

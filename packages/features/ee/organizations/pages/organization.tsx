@@ -8,7 +8,7 @@ export const getServerSideProps = async ({ req, res }: GetServerSidePropsContext
   const prisma = await import("@calcom/prisma").then((mod) => mod.default);
   const flags = await getFeatureFlagMap(prisma);
   // Check if organizations are enabled
-  if (flags["organizations"] !== true) {
+  if (flags["organizations"].enabled !== true) {
     return {
       notFound: true,
     };

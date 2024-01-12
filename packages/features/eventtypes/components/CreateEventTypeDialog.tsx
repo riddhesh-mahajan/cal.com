@@ -269,7 +269,7 @@ export default function CreateEventTypeDialog({
                   }}
                   className={classNames(
                     "mt-1 flex gap-4",
-                    isAdmin && flags["managed-event-types"] && "flex-col"
+                    isAdmin && flags["managed-event-types"].enabled && "flex-col"
                   )}>
                   <RadioArea.Item
                     {...register("schedulingType")}
@@ -288,7 +288,7 @@ export default function CreateEventTypeDialog({
                     <p>{t("round_robin_description")}</p>
                   </RadioArea.Item>
                   <>
-                    {isAdmin && flags["managed-event-types"] && (
+                    {isAdmin && flags["managed-event-types"].enabled && (
                       <RadioArea.Item
                         {...register("schedulingType")}
                         value={SchedulingType.MANAGED}
