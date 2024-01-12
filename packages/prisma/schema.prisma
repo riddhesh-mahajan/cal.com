@@ -1089,7 +1089,7 @@ model Segment {
   id           Int                        @id @default(autoincrement())
   name         String
   coverage     Int
-  coverageType SegmentCoverageTypeOptions @default(PERCENT)
+  coverageUnit SegmentCoverageTypeOptions @default(PERCENT)
   selection    SegmentSelectionOptions    @default(RANDOM)
   teamFilter   SegmentTeamFilterOptions   @default(ALL)
   segmentUsers SegmentUser[]

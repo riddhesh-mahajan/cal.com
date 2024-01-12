@@ -12,14 +12,14 @@ type GetOptions = {
 
 const updateSegmentHandler = async ({ input }: GetOptions) => {
   console.log(input);
-  const { segmentId, name, emails, coverage, selection, coverageType, team, feature } = input;
+  const { segmentId, name, emails, coverage, selection, coverageUnit, team, feature } = input;
 
   // Update segment
   const data: any = {
     name,
     coverage,
     selection,
-    coverageType,
+    coverageUnit,
     teamFilter: team,
   };
 

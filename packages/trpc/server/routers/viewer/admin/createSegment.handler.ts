@@ -12,14 +12,14 @@ type GetOptions = {
 
 const createSegmentHandler = async ({ input }: GetOptions) => {
   console.log(input);
-  const { name, emails, coverage, selection, coverageType, team, feature } = input;
+  const { name, emails, coverage, selection, coverageUnit, team, feature } = input;
 
   // Create segment
   const data: any = {
     name,
     coverage,
     selection,
-    coverageType,
+    coverageUnit,
     teamFilter: team,
   };
   if (feature) {

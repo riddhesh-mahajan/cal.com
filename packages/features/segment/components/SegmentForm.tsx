@@ -14,7 +14,7 @@ type OptionValues = {
   name: string;
   selection: Option;
   coverage: number;
-  coverageType: Option;
+  coverageUnit: Option;
   team: Option;
   emails: string[];
   feature: Option;
@@ -66,10 +66,10 @@ export const SegmentForm = ({
       },
 
       coverage: defaultValues?.coverage,
-      coverageType: {
-        value: defaultValues?.coverageType || coverageTypeOptions[0].value,
+      coverageUnit: {
+        value: defaultValues?.coverageUnit || coverageTypeOptions[0].value,
         label:
-          coverageTypeOptions.find((option) => option.value === defaultValues?.coverageType)?.label ||
+          coverageTypeOptions.find((option) => option.value === defaultValues?.coverageUnit)?.label ||
           coverageTypeOptions[0].label,
       },
 
@@ -135,13 +135,13 @@ export const SegmentForm = ({
         />
 
         <Controller
-          name="coverageType"
+          name="coverageUnit"
           control={form.control}
           render={({ field: { onChange, value } }) => (
             <div>
-              <Label className="text-default font-medium" htmlFor="coverageType">
+              <Label className="text-default font-medium" htmlFor="coverageUnit">
                 {/* TODO: handle t */}
-                {t("coverageType")}
+                {t("coverageUnit")}
               </Label>
               <Select<{ label: string; value: string }>
                 value={value}

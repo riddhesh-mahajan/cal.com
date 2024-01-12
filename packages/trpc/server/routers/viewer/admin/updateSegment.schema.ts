@@ -6,7 +6,7 @@ export const ZUpdateSegmentSchema = z.object({
   emails: z.array(z.string()),
   coverage: z.number(),
   selection: z.enum(["RANDOM", "CUSTOM", "TARGETED"]),
-  coverageType: z.enum(["PERCENT", "USERS"]),
+  coverageUnit: z.enum(["PERCENT", "USERS"]),
   team: z.enum(["ALL", "NO_TEAMS", "ATLEAST_ONE_TEAM"]),
   feature: z.string().optional(),
 });
