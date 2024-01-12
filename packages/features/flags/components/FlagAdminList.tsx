@@ -1,3 +1,6 @@
+import Link from "next/link";
+
+import { FeatureStatus } from "@calcom/prisma/enums";
 import { trpc } from "@calcom/trpc/react";
 import type { RouterOutputs } from "@calcom/trpc/react";
 import { Badge, List, ListItem, ListItemText, ListItemTitle, Select, Switch, showToast } from "@calcom/ui";
@@ -16,6 +19,20 @@ export const FlagAdminList = () => {
               <Badge variant="green">{flag.type?.replace("_", " ")}</Badge>
             </ListItemTitle>
             <ListItemText component="p">{flag.description}</ListItemText>
+          </div>
+
+          <div className="flex px-4">
+            {flag.enabled && flag.status === FeatureStatus.PILOTING && (
+              <>
+                {flag?.segment?.name ? (
+                  <Link href="/settings/admin/segments">
+                    <Badge variant="green">{flag.segment.name}</Badge>
+                  </Link>
+                ) : (
+                  <Badge variant="red">No segment attached</Badge>
+                )}
+              </>
+            )}
           </div>
 
           <div className="flex px-4">{flag.enabled && <FlagStatus flag={flag} />}</div>

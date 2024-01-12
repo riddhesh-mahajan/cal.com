@@ -10,6 +10,9 @@ export const featureFlagRouter = router({
     return prisma.feature.findMany({
       orderBy: { slug: "asc" },
       cacheStrategy: { swr: 300, ttl: 300 },
+      include: {
+        segment: true,
+      },
     });
   }),
   listFlagStatuses: publicProcedure.query(async ({}) => {
