@@ -14,15 +14,6 @@ const createSegmentHandler = async ({ input }: GetOptions) => {
   console.log(input);
   const { name, emails, coverage, selection, coverageType, team, feature } = input;
 
-  // Get all users
-  const users = await prisma.user.findMany({
-    where: {
-      email: {
-        in: emails,
-      },
-    },
-  });
-
   // Create segment
   const data: any = {
     name,
@@ -30,11 +21,6 @@ const createSegmentHandler = async ({ input }: GetOptions) => {
     selection,
     coverageType,
     teamFilter: team,
-    users: {
-      connect: users.map((user) => ({
-        id: user.id,
-      })),
-    },
   };
   if (feature) {
     data.feature = {
@@ -46,6 +32,33 @@ const createSegmentHandler = async ({ input }: GetOptions) => {
 
   const newSegment = await prisma.segment.create({
     data: data,
+  });
+
+  // Get all users
+  const users = await prisma.user.findMany({
+    where: {
+      email: {
+        in: emails,
+      },
+    },
+  });
+
+  // Create segmentUsers
+  users.forEach(async (user) => {
+    await prisma.segmentUser.create({
+      data: {
+        segment: {
+          connect: {
+            id: newSegment.id,
+          },
+        },
+        user: {
+          connect: {
+            id: user.id,
+          },
+        },
+      },
+    });
   });
 
   return {

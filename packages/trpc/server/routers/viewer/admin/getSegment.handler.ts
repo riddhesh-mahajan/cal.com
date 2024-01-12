@@ -13,6 +13,13 @@ type GetOptions = {
 const getSegmentHandler = async ({ input }: GetOptions) => {
   const segment = await prisma.segment.findFirst({
     where: { id: input.segmentId },
+    include: {
+      segmentUsers: {
+        include: {
+          user: true,
+        },
+      },
+    },
   });
 
   return {

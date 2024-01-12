@@ -14,15 +14,6 @@ const updateSegmentHandler = async ({ input }: GetOptions) => {
   console.log(input);
   const { segmentId, name, emails, coverage, selection, coverageType, team, feature } = input;
 
-  // Get all users
-  const users = await prisma.user.findMany({
-    where: {
-      email: {
-        in: emails,
-      },
-    },
-  });
-
   // Update segment
   const data: any = {
     name,
@@ -30,9 +21,6 @@ const updateSegmentHandler = async ({ input }: GetOptions) => {
     selection,
     coverageType,
     teamFilter: team,
-    users: {
-      connect: users.map((user) => ({ id: user.id })),
-    },
   };
 
   if (feature) {
@@ -47,6 +35,40 @@ const updateSegmentHandler = async ({ input }: GetOptions) => {
       id: segmentId,
     },
     data: data,
+  });
+
+  // Get all users
+  const users = await prisma.user.findMany({
+    where: {
+      email: {
+        in: emails,
+      },
+    },
+  });
+
+  // Delete exsiting segmentUsers
+  await prisma.segmentUser.deleteMany({
+    where: {
+      segmentId,
+    },
+  });
+
+  // Create segmentUsers
+  users.forEach(async (user) => {
+    await prisma.segmentUser.create({
+      data: {
+        segment: {
+          connect: {
+            id: segmentId,
+          },
+        },
+        user: {
+          connect: {
+            id: user.id,
+          },
+        },
+      },
+    });
   });
 
   return {

@@ -79,7 +79,7 @@ export const SegmentForm = ({
           teamOptions.find((option) => option.value === defaultValues?.team)?.label || teamOptions[0].label,
       },
 
-      emails: defaultValues?.emails || [],
+      emails: defaultValues?.segmentUsers?.map((segmentUser: any) => segmentUser.user.email) || [],
       feature: {
         value: defaultValues?.featureId,
         label: defaultValues?.featureId,

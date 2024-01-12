@@ -267,7 +267,7 @@ model User {
   // Used to lock the user account
   locked Boolean @default(false)
 
-  segments Segment[]
+  segments SegmentUser[]
 
   @@unique([email])
   @@unique([email, username])
@@ -1085,13 +1085,23 @@ model Segment {
   coverageType SegmentCoverageTypeOptions @default(PERCENT)
   selection    SegmentSelectionOptions    @default(RANDOM)
   teamFilter   SegmentTeamFilterOptions   @default(ALL)
-  users        User[]
+  segmentUsers SegmentUser[]
 
   feature   Feature? @relation(fields: [featureId], references: [slug])
   featureId String?  @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model SegmentUser {
+  id        Int     @id @default(autoincrement())
+  segmentId Int
+  userId    Int
+  segment   Segment @relation(fields: [segmentId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
+
+  @@unique([segmentId, userId])
 }
 
 model OutOfOfficeEntry {
