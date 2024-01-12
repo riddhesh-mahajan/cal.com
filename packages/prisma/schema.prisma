@@ -919,17 +919,24 @@ model VerifiedNumber {
   @@index([teamId])
 }
 
+enum FeatureStatus {
+  PILOTING
+  FULLY_ROLLED_OUT
+}
+
 model Feature {
   // The feature slug, ex: 'v2-workflows'
-  slug        String       @id @unique
+  slug        String        @id @unique
   // If the feature is currently enabled
-  enabled     Boolean      @default(false)
+  enabled     Boolean       @default(false)
+  // Status of the feature
+  status      FeatureStatus @default(FULLY_ROLLED_OUT)
   // A short description of the feature
   description String?
   // The type of feature flag
-  type        FeatureType? @default(RELEASE)
+  type        FeatureType?  @default(RELEASE)
   // If the flag is considered stale
-  stale       Boolean?     @default(false)
+  stale       Boolean?      @default(false)
   // Connected segment
   segment     Segment?
 

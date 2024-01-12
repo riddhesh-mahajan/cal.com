@@ -44,6 +44,16 @@ export const adminRouter = router({
         data: { enabled, updatedBy: user.id },
       });
     }),
+  updateFeatureStatus: authedAdminProcedure
+    .input(z.object({ slug: z.string(), status: z.string() }))
+    .mutation(({ ctx, input }) => {
+      const { prisma, user } = ctx;
+      const { slug, status } = input;
+      return prisma.feature.update({
+        where: { slug },
+        data: { status, updatedBy: user.id },
+      });
+    }),
   createSegment: authedAdminProcedure.input(ZCreateSegmentSchema).mutation(async (opts) => {
     const handler = await importHandler(namespaced("createSegment"), () => import("./createSegment.handler"));
     return handler(opts);

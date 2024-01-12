@@ -1,3 +1,4 @@
+import { FeatureStatus } from "@calcom/prisma/enums";
 import publicProcedure from "@calcom/trpc/server/procedures/publicProcedure";
 import { router } from "@calcom/trpc/server/trpc";
 
@@ -10,6 +11,9 @@ export const featureFlagRouter = router({
       orderBy: { slug: "asc" },
       cacheStrategy: { swr: 300, ttl: 300 },
     });
+  }),
+  listFlagStatuses: publicProcedure.query(async ({}) => {
+    return FeatureStatus;
   }),
   map: publicProcedure.query(async ({ ctx }) => {
     const { prisma } = ctx;
