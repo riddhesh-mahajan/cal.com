@@ -1,3 +1,5 @@
+"use client";
+
 import type { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
 
@@ -6,7 +8,7 @@ import { CreateANewOrganizationForm } from "@calcom/features/ee/organizations/co
 import { getFeatureFlagMap, isIAmInPilotingSegment } from "@calcom/features/flags/server/utils";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { FeatureStatus } from "@calcom/prisma/enums";
-import { WizardLayout, Meta } from "@calcom/ui";
+import { WizardLayout, Meta, WizardLayoutAppDir } from "@calcom/ui";
 
 import type { inferSSRProps } from "@lib/types/inferSSRProps";
 
@@ -26,6 +28,14 @@ const LayoutWrapper = (page: React.ReactElement) => {
     <WizardLayout currentStep={1} maxSteps={5}>
       {page}
     </WizardLayout>
+  );
+};
+
+export const WrappedCreateNewOrganizationPage = (page: React.ReactElement) => {
+  return (
+    <WizardLayoutAppDir currentStep={1} maxSteps={5}>
+      {page}
+    </WizardLayoutAppDir>
   );
 };
 
