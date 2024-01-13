@@ -131,7 +131,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     };
   }
 
-  if (flags.insights.status === FeatureStatus.PILOTING) {
+  if (process.env.ENABLE_ADVANCED_FLAGS === "true" && flags.insights.status === FeatureStatus.PILOTING) {
     const insidePilotingSegment = await isIAmInPilotingSegment(prisma, "insights", session.user.id);
     if (!insidePilotingSegment) {
       return {

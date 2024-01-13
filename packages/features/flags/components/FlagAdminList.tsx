@@ -21,21 +21,25 @@ export const FlagAdminList = () => {
             <ListItemText component="p">{flag.description}</ListItemText>
           </div>
 
-          <div className="flex px-4">
-            {flag.enabled && flag.status === FeatureStatus.PILOTING && (
-              <>
-                {flag?.segment?.name ? (
-                  <Link href="/settings/admin/segments">
-                    <Badge variant="green">{flag.segment.name}</Badge>
-                  </Link>
-                ) : (
-                  <Badge variant="red">No segment attached</Badge>
+          {process.env.NEXT_PUBLIC_ENABLE_ADVANCED_FLAGS === "true" && (
+            <>
+              <div className="flex px-4">
+                {flag.enabled && flag.status === FeatureStatus.PILOTING && (
+                  <>
+                    {flag?.segment?.name ? (
+                      <Link href="/settings/admin/segments">
+                        <Badge variant="green">{flag.segment.name}</Badge>
+                      </Link>
+                    ) : (
+                      <Badge variant="red">No segment attached</Badge>
+                    )}
+                  </>
                 )}
-              </>
-            )}
-          </div>
+              </div>
 
-          <div className="flex px-4">{flag.enabled && <FlagStatus flag={flag} />}</div>
+              <div className="flex px-4">{flag.enabled && <FlagStatus flag={flag} />}</div>
+            </>
+          )}
 
           <div className="flex py-2">
             <FlagToggle flag={flag} />

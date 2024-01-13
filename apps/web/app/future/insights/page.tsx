@@ -16,7 +16,7 @@ async function getData() {
   const prisma = await import("@calcom/prisma").then((mod) => mod.default);
   const flags = await getFeatureFlagMap(prisma);
 
-  if (flags.insights === false) {
+  if (flags.insights.enabled === false) {
     return notFound();
   }
 

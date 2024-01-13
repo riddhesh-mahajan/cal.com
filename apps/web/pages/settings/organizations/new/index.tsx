@@ -49,7 +49,7 @@ export const getServerSideProps = async (context: GetServerSidePropsContext) => 
     };
   }
 
-  if (flags.insights.status === FeatureStatus.PILOTING) {
+  if (process.env.ENABLE_ADVANCED_FLAGS === "true" && flags.insights.status === FeatureStatus.PILOTING) {
     const insidePilotingSegment = await isIAmInPilotingSegment(prisma, "organizations", session.user.id);
     if (!insidePilotingSegment) {
       return {
