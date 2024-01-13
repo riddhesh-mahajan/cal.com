@@ -3,6 +3,7 @@ import { noop } from "lodash";
 import { Controller, useForm } from "react-hook-form";
 
 import { useLocale } from "@calcom/lib/hooks/useLocale";
+import type { SegmentUser, User } from "@calcom/prisma/client";
 import { Button, Form, Label, Select, TextAreaField, TextField } from "@calcom/ui";
 
 type Option<T extends string | number = string> = {
@@ -80,7 +81,10 @@ export const SegmentForm = ({
           teamOptions[0].label,
       },
 
-      emails: defaultValues?.segmentUsers?.map((segmentUser: any) => segmentUser.user.email) || [],
+      emails:
+        defaultValues?.segmentUsers?.map(
+          (segmentUser: SegmentUser & { user: User }) => segmentUser.user.email
+        ) || [],
       feature: {
         value: defaultValues?.featureId,
         label: defaultValues?.featureId,
