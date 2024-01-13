@@ -65,7 +65,7 @@ export const SegmentForm = ({
           selectionOptions[0].label,
       },
 
-      coverage: defaultValues?.coverage,
+      coverage: defaultValues?.coverage || 100,
       coverageUnit: {
         value: defaultValues?.coverageUnit || coverageTypeOptions[0].value,
         label:
@@ -74,9 +74,10 @@ export const SegmentForm = ({
       },
 
       team: {
-        value: defaultValues?.team || teamOptions[0].value,
+        value: defaultValues?.teamFilter || teamOptions[0].value,
         label:
-          teamOptions.find((option) => option.value === defaultValues?.team)?.label || teamOptions[0].label,
+          teamOptions.find((option) => option.value === defaultValues?.teamFilter)?.label ||
+          teamOptions[0].label,
       },
 
       emails: defaultValues?.segmentUsers?.map((segmentUser: any) => segmentUser.user.email) || [],
@@ -125,33 +126,35 @@ export const SegmentForm = ({
         )}
       />
 
-      <div className="grid grid-cols-2 gap-4">
-        <TextField
-          type="number"
-          label="Coverage"
-          placeholder="Coverage"
-          required
-          {...form.register("coverage", { valueAsNumber: true })}
-        />
+      {selectionValue.value === "RANDOM" && (
+        <div className="grid grid-cols-2 gap-4">
+          <TextField
+            type="number"
+            label="Coverage"
+            placeholder="Coverage"
+            required
+            {...form.register("coverage", { valueAsNumber: true })}
+          />
 
-        <Controller
-          name="coverageUnit"
-          control={form.control}
-          render={({ field: { onChange, value } }) => (
-            <div>
-              <Label className="text-default font-medium" htmlFor="coverageUnit">
-                {/* TODO: handle t */}
-                {t("coverageUnit")}
-              </Label>
-              <Select<{ label: string; value: string }>
-                value={value}
-                options={coverageTypeOptions}
-                onChange={onChange}
-              />
-            </div>
-          )}
-        />
-      </div>
+          <Controller
+            name="coverageUnit"
+            control={form.control}
+            render={({ field: { onChange, value } }) => (
+              <div>
+                <Label className="text-default font-medium" htmlFor="coverageUnit">
+                  {/* TODO: handle t */}
+                  {t("coverageUnit")}
+                </Label>
+                <Select<{ label: string; value: string }>
+                  value={value}
+                  options={coverageTypeOptions}
+                  onChange={onChange}
+                />
+              </div>
+            )}
+          />
+        </div>
+      )}
 
       {selectionValue.value === "TARGETED" && (
         <Controller
