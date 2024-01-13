@@ -37,21 +37,21 @@ export const SegmentForm = ({
 }) => {
   const { t } = useLocale();
 
-  const selectionOptions = [
-    { value: "RANDOM", label: t("Random") },
-    { value: "CUSTOM", label: t("Custom") },
-    { value: "TARGETED", label: t("Targeted") },
+  const selectionOptions: Option[] = [
+    { value: "RANDOM", label: t("random") },
+    { value: "CUSTOM", label: t("custom") },
+    { value: "TARGETED", label: t("targeted") },
   ];
 
-  const coverageTypeOptions = [
-    { value: "PERCENT", label: t("Percent") },
-    { value: "USERS", label: t("Users") },
+  const coverageTypeOptions: Option[] = [
+    { value: "PERCENT", label: t("percent") },
+    { value: "USERS", label: t("users") },
   ];
 
-  const teamOptions = [
-    { value: "ALL", label: t("All") },
-    { value: "NO_TEAMS", label: t("NoTeam") },
-    { value: "ATLEAST_ONE_TEAM", label: t("AtLeastOneTeam") },
+  const teamOptions: Option[] = [
+    { value: "ALL", label: t("all") },
+    { value: "NO_TEAMS", label: t("no_team") },
+    { value: "ATLEAST_ONE_TEAM", label: t("at_least_one_team") },
   ];
 
   const form = useForm<FormValues>({
@@ -100,7 +100,6 @@ export const SegmentForm = ({
         render={({ field: { onChange, value } }) => (
           <div>
             <Label className="text-default font-medium" htmlFor="feature">
-              {/* TODO: handle t */}
               {t("feature")}
             </Label>
             <Select<{ label: string; value: string }> value={value} options={features} onChange={onChange} />
@@ -114,7 +113,6 @@ export const SegmentForm = ({
         render={({ field: { onChange, value } }) => (
           <div>
             <Label className="text-default font-medium" htmlFor="selection">
-              {/* TODO: handle t */}
               {t("selection")}
             </Label>
             <Select<{ label: string; value: string }>
@@ -142,8 +140,7 @@ export const SegmentForm = ({
             render={({ field: { onChange, value } }) => (
               <div>
                 <Label className="text-default font-medium" htmlFor="coverageUnit">
-                  {/* TODO: handle t */}
-                  {t("coverageUnit")}
+                  {t("coverage_unit")}
                 </Label>
                 <Select<{ label: string; value: string }>
                   value={value}
@@ -163,7 +160,6 @@ export const SegmentForm = ({
           render={({ field: { onChange, value } }) => (
             <div>
               <Label className="text-default font-medium" htmlFor="team">
-                {/* TODO: handle t */}
                 {t("team")}
               </Label>
               <Select<{ label: string; value: string }>
