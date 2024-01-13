@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { FeatureStatus } from "@calcom/prisma/enums";
+
 import { authedAdminProcedure } from "../../../procedures/authedProcedure";
 import { router, importHandler } from "../../../trpc";
 import { ZCreateSegmentSchema } from "./createSegment.schema";
@@ -45,7 +47,7 @@ export const adminRouter = router({
       });
     }),
   updateFeatureStatus: authedAdminProcedure
-    .input(z.object({ slug: z.string(), status: z.string() }))
+    .input(z.object({ slug: z.string(), status: z.nativeEnum(FeatureStatus) }))
     .mutation(({ ctx, input }) => {
       const { prisma, user } = ctx;
       const { slug, status } = input;

@@ -79,22 +79,16 @@ const updateSegmentHandler = async ({ input }: GetOptions) => {
     });
 
     // Create segmentUsers
+    const listOfSegmentUsersToCreate: any = [];
     users.forEach(async (user) => {
-      // TODO: we can use bulk create here
-      await prisma.segmentUser.create({
-        data: {
-          segment: {
-            connect: {
-              id: segment.id,
-            },
-          },
-          user: {
-            connect: {
-              id: user.id,
-            },
-          },
-        },
+      listOfSegmentUsersToCreate.push({
+        segmentId: segmentId,
+        userId: user.id,
       });
+    });
+
+    await prisma.segmentUser.createMany({
+      data: listOfSegmentUsersToCreate,
     });
   }
 
@@ -110,22 +104,16 @@ const updateSegmentHandler = async ({ input }: GetOptions) => {
     });
 
     // Create segmentUsers
+    const listOfSegmentUsersToCreate: any = [];
     users.forEach(async (user) => {
-      // TODO: we can use bulk create here
-      await prisma.segmentUser.create({
-        data: {
-          segment: {
-            connect: {
-              id: segment.id,
-            },
-          },
-          user: {
-            connect: {
-              id: user.id,
-            },
-          },
-        },
+      listOfSegmentUsersToCreate.push({
+        segmentId: segmentId,
+        userId: user.id,
       });
+    });
+
+    await prisma.segmentUser.createMany({
+      data: listOfSegmentUsersToCreate,
     });
   }
 
@@ -157,22 +145,16 @@ const updateSegmentHandler = async ({ input }: GetOptions) => {
     });
 
     // Create segmentUsers
+    const listOfSegmentUsersToCreate: any = [];
     users.forEach(async (user) => {
-      // TODO: we can use bulk create here
-      await prisma.segmentUser.create({
-        data: {
-          segment: {
-            connect: {
-              id: segment.id,
-            },
-          },
-          user: {
-            connect: {
-              id: user.id,
-            },
-          },
-        },
+      listOfSegmentUsersToCreate.push({
+        segmentId: segmentId,
+        userId: user.id,
       });
+    });
+
+    await prisma.segmentUser.createMany({
+      data: listOfSegmentUsersToCreate,
     });
   }
 
